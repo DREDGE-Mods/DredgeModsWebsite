@@ -7,7 +7,7 @@ const { frontmatter } = Astro.props;
 const authorGithubLink = frontmatter.mod.repo.split("/")[0];
 ---
 
-<Layout title={frontmatter.title}>
+<Layout title={frontmatter.mod.name}>
 	<main>
 		<br/>
 		<div class="d-flex justify-content-center">
