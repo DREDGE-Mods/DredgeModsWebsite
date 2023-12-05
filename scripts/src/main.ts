@@ -58,7 +58,7 @@ ${results}`
 
         // Also cover direct paths to images (doesn't start with https://, http://, or www.)
         let regex3 = /(!\[.*\]\()(?!https:\/\/.*$|http:\/\/.*$|www..*$)(.*)/
-        mod_page = mod_page.replace(regex2, "$1" + repo_root + "$2")
+        mod_page = mod_page.replace(regex3, "$1" + repo_root + "$2")
 
         fs.writeFile(`${srcDir()}/pages/mods/${page_name}.md`, mod_page, 'utf8', (err : Error) => {
             if (err) {
