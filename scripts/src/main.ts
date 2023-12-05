@@ -46,12 +46,15 @@ layout: ../../layouts/ModPage.astro
 mod: ${JSON.stringify(mod)}
 ---
 ${results}`
+        let repo_root = mod.readme_raw.replace("README.md", "");
 
         // Takes before and after ./ parts of a local path image embed as capture groups
         let regex = /(!\[.*\]\()\.\/(.*\))/g
-
-        let repo_root = mod.readme_raw.replace("README.md", "");
         mod_page = mod_page.replace(regex, "$1" + repo_root + "$2");
+
+        // Also replace local path images that just start with /
+        let regex2 = /(!\[.*\]\()\.\/(.*\))/g
+        mod_page = mod_page.replace(regex2, "$1" + repo_root + "$2");
 
         fs.writeFile(`${srcDir()}/pages/mods/${page_name}.md`, mod_page, 'utf8', (err : Error) => {
             if (err) {
