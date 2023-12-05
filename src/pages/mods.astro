@@ -20,7 +20,7 @@ import json from '../database.json';
                             <p>{x.description}</p> 
                         </div>
                         <div class="opacity-50">
-                            <p><i>By {x.author} • {x.downloads} downloads • Version {x.latest_version}</i></p>  
+                            <p><i>By {x.author} • {x.downloads} downloads • Version {x.latest_version.replace(/^v/, "")}</i></p>  
                             <BrandLink class="fa-github" name={x.name + " on GitHub"} url={"https://www.github.com/" + x.repo} linkClass="link-light" />
                         </div>
                     </div>
