@@ -12,3 +12,11 @@ To build and deploy locally, run:
 `npm install`
 
 `npm run dev`
+
+To build mod pages locally first cd into the scripts folder then run:
+
+`npm install`
+
+`npm run test`
+
+Don't do it too often to not get rate limited by Github.
