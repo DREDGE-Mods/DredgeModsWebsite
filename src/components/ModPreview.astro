@@ -1,0 +1,26 @@
+---
+export interface Props {
+	mod: any;
+}
+
+const { mod: mod } = Astro.props;
+---
+
+<div class="card bg-secondary h-100">
+    <a href={"/mods/" + mod.name.toLowerCase().trim().split(" ").join("_")}><h2 class="text-center">{mod.name}</h2></a>
+
+    <div class="d-flex flex-column justify-content-center text-center">
+        {(mod.first_image != undefined) && 
+            <div>
+                <img class="w-50" src={mod.first_image}>
+            </div>
+            </br>
+         }
+        <div>
+            <p>{mod.description}</p> 
+        </div>
+        <div class="opacity-50">
+            <p><i>By {mod.author} • {mod.downloads} downloads • Version {mod.latest_version.replace(/^v/, "")}</i></p>  
+        </div>
+    </div>
+</div>

@@ -13,31 +13,30 @@ async function run() {
     core.info("Started fetching mod database. Running from " + process.cwd());
 
     await fetch_json("https://raw.githubusercontent.com/xen-42/DredgeModDatabase/database/database.json").then((results) => {
-        let json = JSON.stringify(results, null, 2);
-        core.info(json);
-
-        fs.writeFile(srcDir() + "/database.json", json, 'utf8', (err : Error) => {
-            if (err) {
-                throw new Error(err.message);
-            }
-            else {
-                core.info("Saved updated database");
-            }
-        });
-        core.info("Saved database.json");
-
         let dir = `${srcDir()}/pages/mods`;
         if (!fs.existsSync(dir)){
             fs.mkdirSync(dir, { recursive: true });
         }
 
         // Now we fetch the readmes
-        results.forEach(load_mod_readme);
+        Promise.all(results.map(load_mod_readme)).then((modified_results) => {
+            let json = JSON.stringify(modified_results, null, 2);
+    
+            fs.writeFile(srcDir() + "/database.json", json, 'utf8', (err : Error) => {
+                if (err) {
+                    throw new Error(err.message);
+                }
+                else {
+                    core.info("Saved updated database");
+                }
+            });
+            core.info("Saved database.json");
+        });
     });
 }
 
-async function load_mod_readme(mod : {readme_raw : string, name : string}) {
-    await fetch_text(mod.readme_raw).then((results) => {
+async function load_mod_readme(mod : any) {
+    return await fetch_text(mod.readme_raw).then((results) => {
         let page_name = mod.name.toLowerCase().trim().split(" ").join("_");
 
         let mod_page = 
@@ -57,8 +56,18 @@ ${results}`
         mod_page = mod_page.replace(regex2, "$1" + repo_root + "$2");
 
         // Also cover direct paths to images (doesn't start with https://, http://, or www.)
-        let regex3 = /(!\[.*\]\()(?!https:\/\/.*$|http:\/\/.*$|www..*$)(.*)/
-        mod_page = mod_page.replace(regex3, "$1" + repo_root + "$2")
+        let regex3 = /(!\[.*\]\()(.*\))/g
+        var imageMatches = mod_page.match(regex3)
+        // Do this programatically because regex is such a pain for checking if something doesn't contain something
+        if (imageMatches != null) {
+            for (let i = 0; i < imageMatches.length; i++) {
+                var imageMatch = imageMatches[i];
+                if (!imageMatch.includes("https://") && !imageMatch.includes("http://") && !imageMatch.includes("www.")) {
+                    let correctedImageUrl = imageMatch.replace(regex3, "$1" + repo_root + "$2");
+                    mod_page = mod_page.replace(imageMatch, correctedImageUrl);
+                }
+            }
+        }
 
         fs.writeFile(`${srcDir()}/pages/mods/${page_name}.md`, mod_page, 'utf8', (err : Error) => {
             if (err) {
@@ -68,6 +77,27 @@ ${results}`
                 core.info("Saved mod page for " + mod.name);
             }
         });
+
+        // Get the first image in the readme, if there is one, but make sure it isn't from img.shields.io
+        let imageRegex = /(!\[.*\]\(.*)\)/g
+        var imageResults = mod_page.match(imageRegex);
+        if (imageResults != null) {
+            for (let i = 0; i < imageResults.length; i++) {
+                var image = imageResults[i]
+                console.log(mod.name + " " + i + " " + image)
+                if (!image.includes("img.shields.io")) {
+                    // Extract just the url from it
+                    var first_image_match = image.match(/(!\[.*\]\()(.*)\)/);
+                    if (first_image_match != null) {
+                        mod.first_image = first_image_match[2]
+                    }
+                    console.log(image)
+                    break;
+                }
+            }
+        }
+
+        return mod
     });
 }
 
