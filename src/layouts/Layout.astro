@@ -79,7 +79,7 @@ const { title } = Astro.props;
 		}
 		a {
 			text-decoration: none;
-			color:cornflowerblue
+			color: cornflowerblue
 		}
 		.dredge-bg {
 			background-image: url('/images/dredge.webp');
@@ -95,14 +95,14 @@ const { title } = Astro.props;
 				text-shadow: none ! important;
 			}
 	</style>
-	<body class="d-flex flex-column min-vh-100 bg-secondary dredge-bg">
+	<body class="d-flex flex-column min-vh-100 bg-black dredge-bg">
 
 		<div class="text-dark d-flex flex-column justify-content-center m-auto container">
 			<Header />
-
+			
 			<Navigation />
 
-			<div class="card bg-grey text-light mt-2">
+			<div class="bg-grey text-light">
 				<slot />
 			</div>
 

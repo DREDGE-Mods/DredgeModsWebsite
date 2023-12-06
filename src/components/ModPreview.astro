@@ -1,0 +1,28 @@
+---
+export interface Props {
+	mod: any;
+}
+
+const { mod: mod } = Astro.props;
+---
+
+<div class="p-2 pb-1 card bg-secondary h-100">
+    <div class="d-flex flex-column text-center h-100">
+        <a href={"/mods/" + mod.name.toLowerCase().trim().split(" ").join("_")}><h5 class="text-center">{mod.name}</h5></a>
+        {(mod.first_image != undefined) && 
+            <div class="pb-2">
+                <img class="w-75" src={mod.first_image}>
+            </div>
+         }
+        <div class="flex-grow-1"></div>
+        <div class="bg-black bg-opacity-25 rounded p-1">
+            <div style="height: 80px; max-height:80px; overflow: hidden; text-overflow:ellipsis; whitespace: nowrap" class="d-block align-text-top">
+            <p>{mod.description}</p> 
+            </div>
+            <div class="opacity-50 ">
+                <p class="mb-0"><i>By {mod.author} • {mod.downloads} downloads</i></p>  
+            </div>
+        </div>
+
+    </div>
+</div>

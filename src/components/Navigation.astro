@@ -3,11 +3,21 @@ const pages = [
     ["/", "Home"],
     ["/mods/", "Mods"]
 ]
+const currentPath = Astro.url.pathname;
+
+function shouldFadeTab(path : string) {
+    if (path == "/") {
+        return currentPath != path
+    }
+    else {
+        return !currentPath.startsWith(path)
+    }
+}
 ---
 
 <nav class="d-flex justify-content-start">
     {pages.map(([path, title]) => (
-        <div class="bg-secondary text-light rounded me-2 ms-2 p-2">
+        <div class="rounded-top bg-grey text-light me-2 ms-2 p-2" class:list={[{"bg-opacity-75": shouldFadeTab(path)}]}>
             <a class="nav-link pe-2 ps-2" href={path}>{title}</a>
         </div>
     ))}

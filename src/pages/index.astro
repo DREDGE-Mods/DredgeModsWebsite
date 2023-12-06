@@ -3,6 +3,12 @@ import Layout from '../layouts/Layout.astro';
 import Title from '../components/Title.astro';
 import BrandLink from '../components/BrandLink.astro';
 import json from '../database.json';
+import ModPreview from '../components/ModPreview.astro';
+
+const featured_mods = [
+	"Dredge VR",
+	"Cosmic Horror Fishing Buddies"
+]
 ---
 
 <Layout title="DREDGE Mods">
@@ -21,12 +27,24 @@ import json from '../database.json';
 
 		<div class="w-100 justify-content-center d-flex">
 			<div class="w-md-50">
-				<p>Here are some of the mods available. See the rest of them <a href="/mods/">here</a>.</p>
+
+				<p>Try out one of these featured mods!</p>
+				<div class="d-flex flex-column align-items-center w-100">
+					{json.filter(x => featured_mods.includes(x.name)).map((mod : any) => 
+						<div class="m-2">
+							<ModPreview mod={mod}/>
+						</div>
+
+					 )}
+				</div>
+
+				<p>Here are some of the other mods available:</p>
 				<p>
-					{json.slice().sort(() => 0.5 - Math.random()).slice(0, 3).map(x => 
+					{json.slice().filter(x => !featured_mods.includes(x.name)).sort(() => 0.5 - Math.random()).slice(0, 3).map(x => 
 						<li><a href={"/mods/" + x.name.toLowerCase().trim().split(" ").join("_")}><b>{x.name}</b></a> - {x.description}</li>
 					)}
 				</p>
+				<p>See the rest of them <a href="/mods/">here</a>.</p>
 			</div>
 		</div>
 
