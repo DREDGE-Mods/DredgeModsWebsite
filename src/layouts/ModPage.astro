@@ -21,18 +21,18 @@ const authorGithubLink = frontmatter.mod.repo.split("/")[0];
 					{frontmatter.mod.description}
 				</div>
 	
-				<div class="p-2 d-flex d-flex justify-content-around flex-wrap">
-					<span class="ps-2 pe-2">
+				<div class="p-2 d-flex d-flex flex-wrap justify-content-center">
+					<span class="ps-2 pe-2" style="min-width: 33%; text-align:center">
 						📈 {frontmatter.mod.downloads} Downloads
 					</span>
 	
-					<span class="ps-2 pe-2">
+					<span class="ps-2 pe-2" style="min-width: 33%; text-align:center">
 						<a href={"https://www.github.com/" + frontmatter.mod.repo}>
 							<i class="fa-brands fa-github"></i> Source Code
 						</a>
 					</span>
 	
-					<span class="ps-2 pe-2">
+					<span class="ps-2 pe-2" style="min-width: 33%; text-align:center">
 						<a href={"https://www.github.com/" + frontmatter.mod.repo + "/releases/latest/download/" + frontmatter.mod.download}>
 							<i class="fa fa-download"></i> Download zip ({frontmatter.mod.latest_version})
 						</a>
