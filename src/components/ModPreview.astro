@@ -13,7 +13,7 @@ const { mod: mod } = Astro.props;
                 <h5 class="text-center">{mod.name}</h5>
                 {(mod.thumbnail != undefined && mod.thumbnail != "") && 
                     <div class="pb-2">
-                        <img class="bg-black bg-opacity-50" style="object-fit: contain" src={"https://raw.githubusercontent.com/DREDGE-Mods/DredgeModDatabase/database/thumbnails/" + mod.first_image} alt={mod.name} width="400" height="200" loading="eager">
+                        <img class="bg-black bg-opacity-50" style="object-fit: contain" src={"https://raw.githubusercontent.com/DREDGE-Mods/DredgeModDatabase/database/thumbnails/" + mod.thumbnail} alt={mod.name} width="400" height="200" loading="eager">
                     </div>
                 }
             </a>
