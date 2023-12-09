@@ -12,9 +12,7 @@ import ModPreview from '../components/ModPreview.astro';
 
 		<div class="d-flex justify-content-center mw-100 flex-wrap align-content-around">
             {json.sort((a, b) => b.downloads - a.downloads).map((mod : any) => 
-            <div class="m-2" style="flex: 1 1 0; min-width: 300px; max-width: 500px;">
                 <ModPreview mod={mod}/>
-            </div>
              )}
 		</div>
 
