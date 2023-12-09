@@ -78,25 +78,6 @@ ${results}`
             }
         });
 
-        // Get the first image in the readme, if there is one, but make sure it isn't from img.shields.io
-        let imageRegex = /(!\[.*\]\(.*)\)/g
-        var imageResults = mod_page.match(imageRegex);
-        if (imageResults != null) {
-            for (let i = 0; i < imageResults.length; i++) {
-                var image = imageResults[i]
-                console.log(mod.name + " " + i + " " + image)
-                if (!image.includes("img.shields.io")) {
-                    // Extract just the url from it
-                    var first_image_match = image.match(/(!\[.*\]\()(.*)\)/);
-                    if (first_image_match != null) {
-                        mod.first_image = first_image_match[2]
-                    }
-                    console.log(image)
-                    break;
-                }
-            }
-        }
-
         return mod
     });
 }
