@@ -20,3 +20,7 @@ To build mod pages locally first cd into the scripts folder then run:
 `npm run test`
 
 Don't do it too often to not get rate limited by Github.
+
+To test the sitemap and robots.txt integration run
+
+`npm run astro build`
