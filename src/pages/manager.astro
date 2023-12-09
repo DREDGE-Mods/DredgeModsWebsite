@@ -1,0 +1,57 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Title from '../components/Title.astro';
+import json from '../database.json';
+import ModPreview from '../components/ModPreview.astro';
+---
+
+<Layout title="DREDGE Mods">
+	<main>
+        <Title title="Mod Manager" />
+        
+        <div class="w-100 justify-content-center d-flex">
+			<div class="w-md-50">
+				<div class="d-flex align-items-center">
+					<img src="/images/mod manager.png" class="w-100 ratio ratio-1x1"></img>
+				</div>
+			</div>
+		</div>
+				
+		<br/>
+
+		<div class="justify-content-center d-flex">
+			<a href="https://github.com/xen-42/DredgeModManager/releases" class="btn btn-info rounded ps-4 pe-4 p-2"><h2>Click here to download the Mod Manager</h2></a>
+		</div>
+
+		<br/>
+
+		<div class="w-100 justify-content-center d-flex">
+			<div class="w-md-50">
+
+				The mod manager allows you to:
+				<ul>
+					<li>Download and install mods, including the mod loader itself</li>
+					<li>Update mods</li>
+					<li>Enable or disable mods</li>
+					<li>Launch the game directly with your enabled mods</li>
+				</ul>
+
+				To use the manager:
+				<ul>
+					<li>Download the correct version from the link above. If you're on windows this will likely be "Dredge.Mod.Manager_#.#.#_x64-setup.exe".</li>
+					<li>Run the installer. If on Windows, Microsoft Defender will stop you from running it. Click "more info" and "run anyway".</li>
+					<li>Click through the installer as normal.</li>
+				</ul>
+
+				<b>Note:</b> You must install Winch from the Available mods list to have any mods take work. To get rid of all mods, uninstall all of them including Winch
+				 and then verify your game files in 
+				whatever platform you installed the game with.
+			</div>
+		</div>
+
+		<br/>
+
+	</main>
+</Layout>
+
+
