@@ -29,9 +29,9 @@ const featured_mods = [
 			<div class="w-md-50">
 
 				<p>Try out one of these featured mods!</p>
-				<div class="d-flex flex-column align-items-center w-100">
+				<div class="d-flex justify-content-center mw-100 flex-wrap align-content-around">
 					{json.filter(x => featured_mods.includes(x.name)).map((mod : any) => 
-						<div class="m-2">
+						<div class="m-2 w-100">
 							<ModPreview mod={mod}/>
 						</div>
 
