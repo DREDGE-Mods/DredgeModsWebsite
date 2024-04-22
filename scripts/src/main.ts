@@ -1,6 +1,7 @@
 const core = require("@actions/core");
 const node_fetch = require("node-fetch");
 const fs = require("fs");
+const octo = require("octokit")
 
 function srcDir() {
     let dir = process.cwd().split("\\").slice(-1)[0];
@@ -82,10 +83,9 @@ ${results}`
     });
 }
 
-async function fetch_json(url : string) {
-    let settings = {method: "GET"};
-    let res = await node_fetch(url, settings);
-    let json = await res.json();
+async function fetch_json(octokit : any, url : string) {
+    let res = await octokit.request("GET " + url);
+    let json = res.data;
 
     if (json.hasOwnProperty("message") && (json["message"] as string).includes("API rate limit exceeded")) {
         throw new Error(json["message"]);
