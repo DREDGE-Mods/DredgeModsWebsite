@@ -96,6 +96,10 @@ ${results}`
 layout: ../../../layouts/ModDownloadsPage.astro
 mod_guid: ${mod.mod_guid}
 ---`
+        let dir = `${srcDir()}/pages/mods/${page_name}`;
+        if (!fs.existsSync(dir)){
+            fs.mkdirSync(dir, { recursive: true });
+        }
         fs.writeFile(`${srcDir()}/pages/mods/${page_name}/downloads.md`, downloads_page, `utf8`, (err : Error) => {
             if (err) {
                 throw new Error(err.message);
