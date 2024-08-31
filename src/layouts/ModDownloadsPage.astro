@@ -23,9 +23,10 @@ Object.keys(json).forEach(key => {
     }
 });
 
-if (downloads.find(x => x == 0) == undefined) {
+var releaseDateTime = new Date(mod?.release_date ?? "").getTime();
+if (downloads.find(x => x == 0) == undefined && days.find(x => x == releaseDateTime) == undefined) {
     downloads.push(0)
-    days.push(new Date(mod?.release_date ?? "").getTime())
+    days.push(releaseDateTime)
 }
 
 const indices = Array.from(days.keys());
