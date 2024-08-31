@@ -20,6 +20,7 @@ async function run() {
 
         // Now we fetch the readmes
         Promise.all(results.map(load_mod_readme)).then((modified_results) => {
+            // Once readmes are fetched, save the current db
             let json = JSON.stringify(modified_results, null, 2);
     
             fs.writeFile(srcDir() + "/database.json", json, 'utf8', (err : Error) => {
@@ -31,6 +32,17 @@ async function run() {
                 }
             });
             core.info("Saved database.json");
+        });
+    });
+
+    await fetch_json("https://raw.githubusercontent.com/DREDGE-Mods/DredgeModDownloadTracker/main/scripts/downloads.json").then((results) => {
+        fs.writeFile(srcDir() + "/downloads.json", JSON.stringify(results, null, 2), 'utf8', (err : Error) => {
+            if (err) {
+                throw new Error(err.message);
+            }
+            else {
+                core.info("Saved updated download counts");
+            }
         });
     });
 }

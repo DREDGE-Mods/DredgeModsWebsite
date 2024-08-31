@@ -27,7 +27,9 @@ const authorGithubLink = frontmatter.mod.repo.split("/")[0];
 	
 				<div class="p-2 d-flex d-flex flex-wrap justify-content-center">
 					<span class="ps-2 pe-2" style="min-width: 33%; text-align:center">
-						📈 {frontmatter.mod.downloads} Downloads
+						<a href={"/mods/" +frontmatter.mod.name.toLowerCase().trim().split(" ").join("_") + "/downloads"}>
+							📈 {frontmatter.mod.downloads} Downloads
+						</a>
 					</span>
 	
 					<span class="ps-2 pe-2" style="min-width: 33%; text-align:center">
