@@ -17,8 +17,10 @@ Object.keys(json).forEach(key => {
     const day = new Date(parseInt(dmy[2]), parseInt(dmy[1]) - 1, parseInt(dmy[0])).getTime()
     const downloadCount = (json as any)[key][frontmatter.mod_guid]
 
-    downloads.push(downloadCount)
-    days.push(day);
+    if (downloadCount != undefined) {
+        downloads.push(downloadCount)
+        days.push(day);
+    }
 });
 
 if (downloads.find(x => x == 0) == undefined) {
