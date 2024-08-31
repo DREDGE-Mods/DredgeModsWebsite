@@ -24,7 +24,7 @@ Object.keys(json).forEach(key => {
 });
 
 var releaseDateTime = new Date(mod?.release_date ?? "").getTime();
-if (downloads.find(x => x == 0) == undefined && days.find(x => x == releaseDateTime) == undefined) {
+if (downloads.find(x => x == 0) == undefined && days.find(x => x <= releaseDateTime) == undefined) {
     downloads.push(0)
     days.push(releaseDateTime)
 }
