@@ -6,7 +6,7 @@ const { frontmatter } = Astro.props;
 import json from '../downloads.json'
 import db from '../database.json'
 
-var previousURL = Astro.url.pathname.substring(0, Astro.url.pathname.length - "downloads".length);
+var previousURL = Astro.url.pathname.substring(0, Astro.url.pathname.length - "downloads/".length);
 
 var mod = db.find(x => x.mod_guid == frontmatter.mod_guid)
 
