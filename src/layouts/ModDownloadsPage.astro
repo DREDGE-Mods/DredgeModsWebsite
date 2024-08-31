@@ -1,21 +1,28 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import Title from '../components/Title.astro';
-import BrandLink from '../components/BrandLink.astro';
 
 const { frontmatter } = Astro.props;
 import json from '../downloads.json'
+import db from '../database.json'
+
+var mod = db.find(x => x.mod_guid == frontmatter.mod_guid)
 
 var days : number[] = []
 var downloads : number[] = []
 Object.keys(json).forEach(key => {
     const dmy = key.split("/")
     const day = new Date(parseInt(dmy[2]), parseInt(dmy[1]) - 1, parseInt(dmy[0])).getTime()
-    const downloadCount = (json as any)[key]["hacktix.winch"]
+    const downloadCount = (json as any)[key][frontmatter.mod_guid]
 
     downloads.push(downloadCount)
     days.push(day);
 });
+
+if (downloads.find(x => x == 0) == undefined) {
+    downloads.push(0)
+    days.push(new Date(mod?.release_date ?? "").getTime())
+}
 
 const indices = Array.from(days.keys());
 indices.sort((a, b) => days[a] < days[b] ? -1 : 1)
@@ -38,33 +45,35 @@ var lastDate = new Date(Math.max(...sortedDates));
             const downloads = this.dataset.downloads?.split(",").map((x : string) => parseInt(x)) as number[];
 
             const stringDates = dates.map((x) => new Date(x).toLocaleDateString(undefined, {month: 'long', day: 'numeric', year: 'numeric'}))
-            
+
             //@ts-ignore
             new Chart("myChart", {
-                type: "line",
                 data: {
-                    labels: stringDates,
+                    labels: dates,
                     datasets: [{
-                    fill: false,
-                    lineTension: 0,
-                    backgroundColor: "rgba(255,255,255,1.0)",
-                    borderColor: "rgba(255,255,255,0.5)",
-                    data: downloads
+                        type: "line",
+                        fill: false,
+                        lineTension: 0,
+                        backgroundColor: "rgba(255,255,255,1.0)",
+                        borderColor: "rgba(255,255,255,1.0)",
+                        borderWidth: 4,
+                        data: downloads
                     }]
                 },
                 options: {
                     legend: {display: false},
+                    layout: {
+                        padding: {
+                            left: 0,
+                            right: 80,
+                            top: 0,
+                            bottom: 0
+                        }
+                    },
                     scales: {
                         yAxes: [{
-                            scaleLabel: {
-                                display: true,
-                                labelString: "Downloads",
-                                fontSize: 20,
-                                padding: 16,
-                                fontColor: 'white'
-                            },
                             ticks: {
-                                fontSize: 16,
+                                fontSize: 20,
                                 beginAtZero: true,
                                 max: Math.max(...downloads),
                                 // Only show first and last ticks
@@ -72,23 +81,23 @@ var lastDate = new Date(Math.max(...sortedDates));
                                     return (index == 0 || index == values.length / 2) ? value : ""
                                 },
                                 fontColor: 'white'
+                            },
+                            gridLines: {
+                                color: "rgba(255,255,255,0.1)"
                             }
                         }],
                         xAxes: [{
-                            scaleLabel: {
-                                display: true,
-                                labelString: "Date",
-                                fontSize: 20,
-                                padding: 20,
-                                fontColor: 'white'
-                            },
                             ticks: {
-                                fontSize: 12,
+                                fontSize: 16,
                                 // Only show first and last ticks
                                 callback: function(value : string, index : number, values : string[]) {
-                                    return (index == 0 || index == values.length - 1 || index == values.length / 2) ? value : ""
+                                    return (index == 0 || index == values.length - 1 || index == Math.floor(values.length / 2)) ? 
+                                    new Date(value).toLocaleDateString(undefined, {month: 'long', day: 'numeric', year: 'numeric'}) : ""
                                 },
                                 fontColor: 'white'
+                            },
+                            gridLines: {
+                                color: "rgba(255,255,255,0.1)"
                             }
                         }]
                     }
@@ -105,15 +114,12 @@ var lastDate = new Date(Math.max(...sortedDates));
         <Title title="Downloads" />
         <div class="w-100 justify-content-center d-flex">
             <div class="w-md-50">
-                <p>Showing downloads of Winch from {firstDate.toDateString()} to {lastDate.toDateString()}</p>
-                <p>Winch has been downloaded <b>{sortedDownloads[sortedDownloads.length - 1] - sortedDownloads[Math.max(sortedDownloads.length - 8, 0)]}</b> times this week.</p>
+                <p>Showing downloads of {mod.name} from {firstDate.toDateString()} to {lastDate.toDateString()}</p>
+                <p>{mod.name} has been downloaded <b>{sortedDownloads[sortedDownloads.length - 1] - sortedDownloads[Math.max(sortedDownloads.length - 8, 0)]}</b> times this week.</p>
             </div>
         </div>
         <div class="w-100 justify-content-center d-flex">
-            <div style="display:block; width:100%; padding-right:100px;">
-                <canvas id="myChart" style="width:100%; padding-right=80px;"></canvas>
-            </div>
-
+            <canvas id="myChart" style="width:100%; padding-right=80px;"></canvas>
         </div>
 
     </main>

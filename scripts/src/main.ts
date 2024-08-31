@@ -90,6 +90,21 @@ ${results}`
             }
         });
 
+        // Make a downloads page too
+        let downloads_page = 
+`---
+layout: ../../../layouts/ModDownloadsPage.astro
+mod_guid: ${mod.mod_guid}
+---`
+        fs.writeFile(`${srcDir()}/pages/mods/${page_name}/downloads.md`, downloads_page, `utf8`, (err : Error) => {
+            if (err) {
+                throw new Error(err.message);
+            }
+            else {
+                core.info("Saved mod downloads page for " + mod.name);
+            }
+        });
+
         return mod
     });
 }
