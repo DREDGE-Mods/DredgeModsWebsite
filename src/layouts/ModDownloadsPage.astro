@@ -6,6 +6,8 @@ const { frontmatter } = Astro.props;
 import json from '../downloads.json'
 import db from '../database.json'
 
+var previousURL = Astro.url.pathname.substring(0, Astro.url.pathname.length - "downloads".length);
+
 var mod = db.find(x => x.mod_guid == frontmatter.mod_guid)
 
 var days : number[] = []
@@ -32,6 +34,26 @@ const sortedDownloads = indices.map(i => downloads[i])
 
 var firstDate = new Date(Math.min(...sortedDates));
 var lastDate = new Date(Math.max(...sortedDates));
+
+let dayLength = 24 * 60 * 60 * 1000
+let i = 1;
+for (var t = firstDate.getTime() + dayLength; t < lastDate.getTime(); t += dayLength) {
+    if (sortedDates[i] <= t) continue;
+
+    // interp time
+    // this means i is too far ahead and we need to add in new data before it
+    const t0 = sortedDates[i-1]
+    const t1 = sortedDates[i]
+    const d0 = sortedDownloads[i-1]
+    const d1 = sortedDownloads[i]
+
+    const d = d0 + (t - t0) * (d1 - d0) / (t1 - t0)
+
+    sortedDates.splice(i, 0, t)
+    sortedDownloads.splice(i, 0, d)
+    i++
+}
+
 ---
 
 <download-chart data-days={sortedDates} data-downloads={sortedDownloads}></download-chartt>
@@ -49,13 +71,14 @@ var lastDate = new Date(Math.max(...sortedDates));
             //@ts-ignore
             new Chart("myChart", {
                 data: {
-                    labels: dates,
+                    labels: stringDates,
                     datasets: [{
                         type: "line",
                         fill: false,
                         lineTension: 0,
                         backgroundColor: "rgba(255,255,255,1.0)",
                         borderColor: "rgba(255,255,255,1.0)",
+                        pointBorderWidth: 0,
                         borderWidth: 4,
                         data: downloads
                     }]
@@ -75,10 +98,9 @@ var lastDate = new Date(Math.max(...sortedDates));
                             ticks: {
                                 fontSize: 20,
                                 beginAtZero: true,
-                                max: Math.max(...downloads),
                                 // Only show first and last ticks
                                 callback: function(value : string, index : number, values : string[]) {
-                                    return (index == 0 || index == values.length / 2) ? value : ""
+                                    return (index == 0 || index == values.length / 2 || value == 0) ? value : ""
                                 },
                                 fontColor: 'white'
                             },
@@ -89,11 +111,6 @@ var lastDate = new Date(Math.max(...sortedDates));
                         xAxes: [{
                             ticks: {
                                 fontSize: 16,
-                                // Only show first and last ticks
-                                callback: function(value : string, index : number, values : string[]) {
-                                    return (index == 0 || index == values.length - 1 || index == Math.floor(values.length / 2)) ? 
-                                    new Date(value).toLocaleDateString(undefined, {month: 'long', day: 'numeric', year: 'numeric'}) : ""
-                                },
                                 fontColor: 'white'
                             },
                             gridLines: {
@@ -111,16 +128,23 @@ var lastDate = new Date(Math.max(...sortedDates));
 
 <Layout title="DREDGE Mods">
     <main>
-        <Title title="Downloads" />
-        <div class="w-100 justify-content-center d-flex">
-            <div class="w-md-50">
-                <p>Showing downloads of {mod.name} from {firstDate.toDateString()} to {lastDate.toDateString()}</p>
-                <p>{mod.name} has been downloaded <b>{sortedDownloads[sortedDownloads.length - 1] - sortedDownloads[Math.max(sortedDownloads.length - 8, 0)]}</b> times this week.</p>
+        <div style="padding-bottom: 8px">
+            <a href={previousURL}>&lt Back to {mod?.name}</a>            
+        </div>
+        <Title title={(mod?.name ?? "???") + " downloads over time"} />
+        {mod == undefined ? 
+            <div>Something went wrong! Couldn't find mod with id {frontmatter.mod_guid == undefined ? "UNDEFINED" : frontmatter.mod_guid}</div> :
+            <div>
+                <div class="w-100 justify-content-center d-flex">
+                    <div class="w-md-50">
+                        <p>{mod.name} has been downloaded <b>{sortedDownloads[sortedDownloads.length - 1] - sortedDownloads[Math.max(sortedDownloads.length - 8, 0)]}</b> times this week,
+                        and <b>{sortedDownloads[sortedDownloads.length - 1]}</b> times total!</p>
+                    </div>
+                </div>
+                <div class="w-100 justify-content-center d-flex">
+                    <canvas id="myChart" style="width:100%; padding-right=80px;"></canvas>
+                </div>
             </div>
-        </div>
-        <div class="w-100 justify-content-center d-flex">
-            <canvas id="myChart" style="width:100%; padding-right=80px;"></canvas>
-        </div>
-
+        }
     </main>
 </Layout>
