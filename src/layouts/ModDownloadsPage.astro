@@ -48,16 +48,34 @@ var lastDate = new Date(Math.max(...sortedDates));
 
             //@ts-ignore
             new Chart("myChart", {
+                type: "scatter",
                 data: {
-                    labels: dates,
+                    labels: stringDates,
                     datasets: [{
-                        type: "line",
                         fill: false,
                         lineTension: 0,
-                        backgroundColor: "rgba(255,255,255,1.0)",
-                        borderColor: "rgba(255,255,255,1.0)",
-                        borderWidth: 4,
-                        data: downloads
+                        backgroundColor: "rgba(255,255,255,0.0)",
+                        borderColor: "rgba(255,255,255,0.0)",
+                        borderWidth: 0,
+                        data: downloads.map(function(d, i)  
+                        {
+                            return { x : dates[i], y : d };
+                        })
+                    },
+                    {
+                        type: "line",
+                        fill: false,
+                            lineTension: 0,
+                            backgroundColor: "rgba(255,255,255,1.0)",
+                            borderColor: "rgba(255,255,255,1.0)",
+                            pointBorderWidth: 0,
+                            pointBackgroundColor: "rgba(255,255,255,0.0)",
+                            pointBorderColor: "rgba(255,255,255,0.0)",
+                            borderWidth: 3,
+                            data: downloads.map(function(d, i)  
+                            {
+                                return { x : dates[i], y : d };
+                            })
                     }]
                 },
                 options: {
