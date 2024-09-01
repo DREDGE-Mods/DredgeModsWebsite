@@ -135,7 +135,7 @@ const thumbnail = getThumbnail(mod);
     customElements.define('download-chart', DownloadChart);
 </script>
 
-<Layout title={(mod?.name ?? "???") + " - Downloads"} thumbnail={thumbnail}>
+<Layout title={(mod?.name ?? "???") + " - Downloads"} thumbnail={thumbnail} description={mod?.description ?? "A mod for DREDGE"}>
     <main>
         <div style="padding-bottom: 8px">
             <a href={previousURL}>&lt Back to {mod?.name}</a>            

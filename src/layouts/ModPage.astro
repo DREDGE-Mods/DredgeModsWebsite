@@ -10,7 +10,7 @@ import { getThumbnail, getSlug } from '../utils.ts'
 const thumbnail = getThumbnail(frontmatter.mod);
 ---
 
-<Layout title={frontmatter.mod.name} thumbnail={thumbnail}>
+<Layout title={frontmatter.mod.name} thumbnail={thumbnail} description={frontmatter.mod.description ?? "A mod for DREDGE"}>
 	<main>
 		<br/>
 		<div class="d-flex justify-content-center">
