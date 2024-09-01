@@ -146,13 +146,17 @@ const thumbnail = getThumbnail(mod);
             <div>
                 <div class="w-100 justify-content-center d-flex">
                     <div class="w-md-50">
-                        <p>{mod.name} has been downloaded <b>{sortedDownloads[sortedDownloads.length - 1] - sortedDownloads[Math.max(sortedDownloads.length - 8, 0)]}</b> times this week,
-                        and <b>{sortedDownloads[sortedDownloads.length - 1]}</b> times total!</p>
+                        <p>{mod.name} has been downloaded <b>{mod.downloads - sortedDownloads[Math.max(sortedDownloads.length - 8, 0)]}</b> times this week,
+                        and <b>{mod.downloads}</b> times total!</p>
                     </div>
                 </div>
                 <div class="w-100 justify-content-center d-flex">
+                    {downloads.length <= 1 ? 
+                    <div class="p-5 m-5"><h1 class="chromatic-aberration">Nothing to display</h1></div> :
                     <canvas id="myChart" style="width:100%; padding-right=80px;"></canvas>
+                    }
                 </div>
+                <div class="w-100 justify-content-center d-flex"><p>Download data is updated once per day.</p></div>
             </div>
         }
     </main>
