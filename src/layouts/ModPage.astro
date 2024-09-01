@@ -5,9 +5,12 @@ import BrandLink from '../components/BrandLink.astro';
 
 const { frontmatter } = Astro.props;
 const authorGithubLink = frontmatter.mod.repo.split("/")[0];
+
+import { getThumbnail, getSlug } from '../utils.ts'
+const thumbnail = getThumbnail(frontmatter.mod);
 ---
 
-<Layout title={frontmatter.mod.name}>
+<Layout title={frontmatter.mod.name} thumbnail={thumbnail}>
 	<main>
 		<br/>
 		<div class="d-flex justify-content-center">
@@ -27,7 +30,7 @@ const authorGithubLink = frontmatter.mod.repo.split("/")[0];
 	
 				<div class="p-2 d-flex d-flex flex-wrap justify-content-center">
 					<span class="ps-2 pe-2" style="min-width: 33%; text-align:center">
-						<a href={"/mods/" +frontmatter.mod.name.toLowerCase().trim().split(" ").join("_") + "/downloads"}>
+						<a href={"/mods/" + getSlug(frontmatter.mod) + "/downloads"}>
 							📈 {frontmatter.mod.downloads} Downloads
 						</a>
 					</span>

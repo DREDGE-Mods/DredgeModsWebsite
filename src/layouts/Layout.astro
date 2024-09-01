@@ -10,9 +10,10 @@ import '@fortawesome/fontawesome-free/css/solid.css';
 
 export interface Props {
 	title: string;
+	thumbnail?: string | undefined;
 }
 
-const { title } = Astro.props;
+const { title, thumbnail } = Astro.props;
 ---
 
 <!DOCTYPE html>
@@ -33,7 +34,7 @@ const { title } = Astro.props;
 		<meta property="og:site_name" content={title}>
 		<meta property="og:title" content={title}>
 		<meta property="og:description" content="Download and install mods using the DREDGE Mod Manager, or learn to create your own DREDGE mods.">
-		<meta property="og:image" content="https://dredgemods.com/images/opengraph.webp">
+		<meta property="og:image" content={thumbnail == undefined ? "https://dredgemods.com/images/opengraph.webp" : thumbnail}>
 		<meta property="og:image:width" content="1200px">
 		<meta property="og:image:height" content="600px">
 
@@ -43,7 +44,7 @@ const { title } = Astro.props;
 		<meta property="twitter:url" content="https://dredgemods.com/">
 		<meta property="twitter:title" content={title}>
 		<meta property="twitter:description" content="Download and install mods using the DREDGE Mod Manager, or learn to create your own DREDGE mods.">
-		<meta property="twitter:image" content="https://dredgemods.com/images/opengraph.webp">
+		<meta property="twitter:image" content={thumbnail == undefined ? "https://dredgemods.com/images/opengraph.webp" : thumbnail}>
 		<meta property="twitter:image:width" content="1200px">
 		<meta property="twitter:image:height" content="600px">
 		<meta name="twitter:site" content="@xen_42">

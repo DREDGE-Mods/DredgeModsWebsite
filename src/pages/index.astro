@@ -4,6 +4,7 @@ import Title from '../components/Title.astro';
 import BrandLink from '../components/BrandLink.astro';
 import json from '../database.json';
 import ModPreview from '../components/ModPreview.astro';
+import { getSlug } from '../utils.ts';
 
 const featured_mods = [
 	"Dredge VR",
@@ -46,7 +47,7 @@ const featured_mods = [
 				<p>Here are some of the other mods available:</p>
 				<p>
 					{json.slice().filter(x => !featured_mods.includes(x.name)).sort(() => 0.5 - Math.random()).slice(0, 3).map(x => 
-						<li><a href={"/mods/" + x.name.toLowerCase().trim().split(" ").join("_")}><b>{x.name}</b></a> - {x.description}</li>
+						<li><a href={"/mods/" + getSlug(x)}><b>{x.name}</b></a> - {x.description}</li>
 					)}
 				</p>
 				<p>See the rest of them <a href="/mods/">here</a>.</p>

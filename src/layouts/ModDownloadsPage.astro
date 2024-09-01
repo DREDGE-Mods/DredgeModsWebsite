@@ -32,8 +32,8 @@ if (downloads.find(x => x == 0) == undefined && days.find(x => x <= releaseDateT
 const indices = Array.from(days.keys());
 indices.sort((a, b) => days[a] < days[b] ? -1 : 1)
 
-const sortedDates = indices.map(i => days[i])
-const sortedDownloads = indices.map(i => downloads[i])
+var sortedDates = indices.map(i => days[i])
+var sortedDownloads = indices.map(i => downloads[i])
 
 var firstDate = new Date(Math.min(...sortedDates));
 var lastDate = new Date(Math.max(...sortedDates));
@@ -57,6 +57,16 @@ for (var t = firstDate.getTime() + dayLength; t < lastDate.getTime(); t += dayLe
     i++
 }
 
+// For example mods we cut off the first like month bc its wrong uh oh
+// Had the download count for old Winch or something!
+const exampleModGUIDs = ["hacktix.introskipper", "hacktix.exampleitems", "hacktix.disasterbutton"]
+if (exampleModGUIDs.includes(mod?.mod_guid ?? "")) {
+    sortedDates = sortedDates.slice(10);
+    sortedDownloads = sortedDownloads.slice(10);
+}
+
+import { getThumbnail } from '../utils.ts'
+const thumbnail = getThumbnail(mod);
 ---
 
 <download-chart data-days={sortedDates} data-downloads={sortedDownloads}></download-chartt>
@@ -101,10 +111,6 @@ for (var t = firstDate.getTime() + dayLength; t < lastDate.getTime(); t += dayLe
                             ticks: {
                                 fontSize: 20,
                                 beginAtZero: true,
-                                // Only show first and last ticks
-                                callback: function(value : string, index : number, values : string[]) {
-                                    return (index == 0 || index == values.length / 2 || value == 0) ? value : ""
-                                },
                                 fontColor: 'white'
                             },
                             gridLines: {
@@ -129,7 +135,7 @@ for (var t = firstDate.getTime() + dayLength; t < lastDate.getTime(); t += dayLe
     customElements.define('download-chart', DownloadChart);
 </script>
 
-<Layout title="DREDGE Mods">
+<Layout title={(mod?.name ?? "???") + " - Downloads"} thumbnail={thumbnail}>
     <main>
         <div style="padding-bottom: 8px">
             <a href={previousURL}>&lt Back to {mod?.name}</a>            
