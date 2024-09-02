@@ -8,7 +8,7 @@ import ModPreview from '../components/ModPreview.astro';
 <Layout title="DREDGE Mods List">
 	<main>
         <Title title="Available Mods" />
-        <p>There are {json.length} mods available.</p>
+        <p>There are <strong>{json.length}</strong> mods available.</p>
 
 		<div class="d-flex justify-content-center mw-100 flex-wrap align-content-around">
             {json.sort((a, b) => b.downloads - a.downloads).map((mod : any) => 

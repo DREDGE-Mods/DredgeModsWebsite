@@ -15,17 +15,16 @@ const featured_mods = [
 <Layout title="DREDGE Mods">
 	<main>
 		<div class="w-100 justify-content-center d-flex">
-			<p class="w-md-50">
-				The <strong>DREDGE Mods</strong> website hosts {json.length} <b>unofficial</b> mods for <a href="https://www.dredge.game/">DREDGE</a> 
-				 which you can install and play using the <a href="https://github.com/xen-42/DredgeModManager">DREDGE Mod Manager</a>.
-			</p>
+			<div class="w-md-50">
+				<p>
+					The <strong>DREDGE Mods</strong> website hosts {json.length} <b>unofficial</b> mods for <a href="https://www.dredge.game/">DREDGE</a> 
+					 which you can install and play using the <a href="/manager/">DREDGE Mod Manager</a>.
+				</p>
+				<p>
+					Our mods have been downloaded <b>{json.reduce((partialSum, mod) => partialSum + mod.downloads, 0)}</b> times!
+				</p>
+			</div>
 		</div>
-		<div class="w-100 justify-content-center d-flex">
-			<p class="w-md-50">
-				Our mods have been downloaded <b>{json.reduce((partialSum, mod) => partialSum + mod.downloads, 0)}</b> times!
-			</p>
-		</div>
-
 
 		<br/>
 
@@ -51,6 +50,25 @@ const featured_mods = [
 					)}
 				</p>
 				<p>See the rest of them <a href="/mods/">here</a>.</p>
+			</div>
+		</div>
+
+		<br/>
+
+		<Title title="Supported Versions"/>
+
+		<div class="w-100 justify-content-center d-flex">
+			<div class="w-md-50">
+				<p class="text-center">
+					Our mods work on the <a href="https://store.steampowered.com/app/1562430/DREDGE/"><strong>Steam</strong></a> and 
+					<a href="https://www.gog.com/en/game/dredge"><strong>GOG</strong></a> versions of DREDGE.
+				</p>
+		
+				<p class="text-warning text-center"> 
+					<i class="fa fa-exclamation-triangle" aria-hidden="true"></i> 
+					Mods do not function on the Microsoft Store version due to DRM
+					<i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
+				</p>
 			</div>
 		</div>
 
