@@ -8,7 +8,8 @@ import { getSlug } from '../utils.ts';
 
 const featured_mods = [
 	"Dredge VR",
-	"Cosmic Horror Fishing Buddies"
+	"Cosmic Horror Fishing Buddies",
+	"Deep Submergence"
 ]
 ---
 
@@ -30,30 +31,23 @@ const featured_mods = [
 
 		<Title title="Available Mods" />
 
-		<div class="w-100 justify-content-center d-flex">
-			<div class="w-md-50">
-
-				<p>Try out one of these featured mods!</p>
-				<div class="d-flex justify-content-center mw-100 flex-wrap align-content-around">
-					{json.filter(x => featured_mods.includes(x.name)).map((mod : any) => 
-						<div class="m-2 w-100">
-							<ModPreview mod={mod}/>
-						</div>
-
-					 )}
-				</div>
-
-				<p>Here are some of the other mods available:</p>
-				<p>
-					{json.slice().filter(x => !featured_mods.includes(x.name)).sort(() => 0.5 - Math.random()).slice(0, 3).map(x => 
-						<li><a href={"/mods/" + getSlug(x)}><b>{x.name}</b></a> - {x.description}</li>
-					)}
-				</p>
-				<p>See the rest of them <a href="/mods/">here</a>.</p>
-			</div>
+		<p>Try out one of these featured mods!</p>
+			
+		<div class="d-flex justify-content-center mw-100 flex-wrap align-content-around">
+			{json.filter(x => featured_mods.includes(x.name)).map((mod : any) => 
+					<ModPreview mod={mod}/>
+				)}
 		</div>
 
 		<br/>
+		<p>Here are some of the other mods available:</p>
+
+		<div class="d-flex justify-content-center mw-100 flex-wrap align-content-around">
+			{json.slice().filter(x => !featured_mods.includes(x.name) && x.name != "Winch" && x.thumbnail).sort(() => 0.5 - Math.random()).slice(0, 3).map(mod => 
+				<ModPreview mod={mod}/>
+			)}
+		</div>
+		<p>See the rest of the mods <a href="/mods/">here</a>.</p>
 
 		<Title title="Supported Versions"/>
 
