@@ -1,20 +1,23 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import Title from '../components/Title.astro';
-import json from '../database.json';
-import ModPreview from '../components/ModPreview.astro';
+import mods from '../database.json';
+import ModList from '../components/ModsList.jsx'; // adjust path
 ---
 
 <Layout title="DREDGE Mods List">
 	<main>
-        <Title title="Available Mods" />
-        <p>There are <strong>{json.length}</strong> mods available.</p>
+        <script type="module">
+            const input = document.getElementById('searchInput');
+            input.addEventListener('input', () => {
+              console.log(input.value);
+            });
+        </script>
 
-		<div class="d-flex justify-content-center mw-100 flex-wrap align-content-around">
-            {json.sort((a, b) => b.downloads - a.downloads).map((mod : any) => 
-                <ModPreview mod={mod}/>
-             )}
-		</div>
+        <Title title="Available Mods" />
+        <p>There are <strong>{mods.length}</strong> mods available.</p>
+
+        <ModList mods={mods} client:load />
 
 	</main>
 </Layout>
