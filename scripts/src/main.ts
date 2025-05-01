@@ -74,10 +74,23 @@ ${results}`
         if (imageMatches != null) {
             for (let i = 0; i < imageMatches.length; i++) {
                 var imageMatch = imageMatches[i];
+                let correctedImageUrl = imageMatch;
                 if (!imageMatch.includes("https://") && !imageMatch.includes("http://") && !imageMatch.includes("www.")) {
-                    let correctedImageUrl = imageMatch.replace(regex3, "$1" + repo_root + "$2");
-                    mod_page = mod_page.replace(imageMatch, correctedImageUrl);
+                    correctedImageUrl = imageMatch.replace(regex3, "$1" + repo_root + "$2");
                 }
+                
+                // Fix for embedding an image that is part of the github repo 
+                // eg must change
+                // https://github.com/alextric234/ArchipelagoDredgeMod/blob/main/ArchipelagoDredge/Assets/ArchipelagoDredge.jpg
+                // into
+                // https://raw.githubusercontent.com/alextric234/ArchipelagoDredgeMod/refs/heads/main/ArchipelagoDredge/Assets/ArchipelagoDredge.jpg
+                if (correctedImageUrl.includes("https://github.com/")) {
+                    correctedImageUrl = correctedImageUrl.replace("https://github.com/", "https://raw.githubusercontent.com/")
+                    // if somebody puts a file in a folder called "blob" this will break but I do not care
+                    correctedImageUrl = correctedImageUrl.replace("/blob/", "/refs/heads/")
+                }
+
+                mod_page = mod_page.replace(imageMatch, correctedImageUrl);
             }
         }
 
