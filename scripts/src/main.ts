@@ -74,9 +74,9 @@ ${results}`
         if (imageMatches != null) {
             for (let i = 0; i < imageMatches.length; i++) {
                 var imageMatch = imageMatches[i];
-                let correctedImageUrl = imageMatch;
+                let url = imageMatch;
                 if (!imageMatch.includes("https://") && !imageMatch.includes("http://") && !imageMatch.includes("www.")) {
-                    correctedImageUrl = imageMatch.replace(regex3, "$1" + repo_root + "$2");
+                    url = imageMatch.replace(regex3, "$1" + repo_root + "$2");
                 }
                 
                 // Fix for embedding an image that is part of the github repo 
@@ -84,13 +84,13 @@ ${results}`
                 // https://github.com/alextric234/ArchipelagoDredgeMod/blob/main/ArchipelagoDredge/Assets/ArchipelagoDredge.jpg
                 // into
                 // https://raw.githubusercontent.com/alextric234/ArchipelagoDredgeMod/refs/heads/main/ArchipelagoDredge/Assets/ArchipelagoDredge.jpg
-                if (correctedImageUrl.includes("https://github.com/") && !correctedImageUrl.includes("user-attachments")) {
-                    correctedImageUrl = correctedImageUrl.replace("https://github.com/", "https://raw.githubusercontent.com/")
+                if (url.includes("https://github.com/") && !url.includes("user-attachments") && (url.includes(".jpg") || url.includes(".png") || url.includes(".webp"))) {
+                    url = url.replace("https://github.com/", "https://raw.githubusercontent.com/")
                     // if somebody puts a file in a folder called "blob" this will break but I do not care
-                    correctedImageUrl = correctedImageUrl.replace("/blob/", "/refs/heads/")
+                    url = url.replace("/blob/", "/refs/heads/")
                 }
 
-                mod_page = mod_page.replace(imageMatch, correctedImageUrl);
+                mod_page = mod_page.replace(imageMatch, url);
             }
         }
 
