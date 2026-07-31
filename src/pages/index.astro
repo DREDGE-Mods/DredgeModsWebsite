@@ -12,6 +12,8 @@ const featured_mods = [
 	"Deep Submergence",
 	"Archipelago Dredge",
 ].sort(() => Math.random() - 0.5).slice(0, 3)
+
+const new_mods = json.sort((a, b) => new Date(b.release_date) - new Date(a.release_date)).filter(x => !featured_mods.includes(x.name) && x.name != "Winch" && x.thumbnail).slice(0, 3).map(x => x.name)
 ---
 
 <Layout title="DREDGE Mods">
@@ -23,16 +25,17 @@ const featured_mods = [
 					 which you can install and play using the <a href="/manager/">DREDGE Mod Manager</a>.
 				</p>
 				<p>
-					Our mods have been downloaded <b>{json.reduce((partialSum, mod) => partialSum + mod.downloads, 0)}</b> times!
+					Our mods have been downloaded <b>{json.reduce((partialSum, mod) => partialSum + mod.downloads, 0)}</b> times! 
+				</p>
+				<p>
+					To see a list of all mods, <a href="/mods/">click here</a>!
 				</p>
 			</div>
 		</div>
 
 		<br/>
 
-		<Title title="Available Mods" />
-
-		<p>Try out one of these featured mods!</p>
+		<Title title="Featured Mods" />
 			
 		<div class="d-flex justify-content-center mw-100 flex-wrap align-content-around">
 			{json.filter(x => featured_mods.includes(x.name)).map((mod : any) => 
@@ -41,14 +44,25 @@ const featured_mods = [
 		</div>
 
 		<br/>
-		<p>Here are some of the other mods available:</p>
+
+		<Title title="Recent Mods" />
 
 		<div class="d-flex justify-content-center mw-100 flex-wrap align-content-around">
-			{json.slice().filter(x => !featured_mods.includes(x.name) && x.name != "Winch" && x.thumbnail).sort(() => 0.5 - Math.random()).slice(0, 3).map(mod => 
+			{json.filter(x => new_mods.includes(x.name)).map(mod => 
 				<ModPreview mod={mod}/>
 			)}
 		</div>
-		<p>See the rest of the mods <a href="/mods/">here</a>.</p>
+
+		<br/>
+		<Title title="Random Mods" />
+
+		<div class="d-flex justify-content-center mw-100 flex-wrap align-content-around">
+			{json.slice().filter(x => !featured_mods.includes(x.name) && !new_mods.includes(x.name) && x.name != "Winch" && x.thumbnail).sort(() => 0.5 - Math.random()).slice(0, 3).map(mod => 
+				<ModPreview mod={mod}/>
+			)}
+		</div>
+
+		<br/>
 
 		<Title title="Supported Versions"/>
 
