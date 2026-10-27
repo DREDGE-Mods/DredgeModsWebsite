@@ -22,7 +22,8 @@ export default function ModList({ mods }) {
   const [filterMode, setFilterMode] = useState('mostDownloaded');
 
   const filteredMods = sortMods(mods, filterMode)
-    .filter((mod) => search == "" || mod.name.toLowerCase().includes(search.toLowerCase()) || mod.description.toLowerCase().includes(search.toLowerCase()));
+    .filter((mod) => search == "" || mod.name.toLowerCase().includes(search.toLowerCase()) || mod.description.toLowerCase().includes(search.toLowerCase()) ||
+                                      mod.author.toLowerCase().includes(search.toLowerCase()));
 
   return (
     <div>
